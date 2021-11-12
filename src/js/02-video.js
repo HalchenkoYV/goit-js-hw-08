@@ -7,10 +7,7 @@ const iframe = document.querySelector('iframe');
         console.log('played the video!');
     });
 
-    player.getVideoTitle().then(function(title) {
-        console.log('title:', title);
-    });
-////////////////////////////////////////////////////////////////////////////////////////////
+   
 const save = (key, value) => {
   try {
     const serializedState = JSON.stringify(value);
@@ -18,6 +15,7 @@ const save = (key, value) => {
   } catch (error) {
     console.error("Set state error: ", error.message);
   }
+
 };
 
 const load = key => {
@@ -28,29 +26,13 @@ const load = key => {
     console.error("Get state error: ", error.message);
   }
 };
-//////////////////////////////////////////////////////////////////////////////////////////////
 
-//  player.on('timeupdate', function(data) {
-//     const { duration, percent, seconds } = data;
-//     save("seconds", seconds);
-//  });
 
-player.on('timeupdate', function(data) {
-    const { duration, percent, seconds } = data;
-    throttle(save("seconds", seconds), 1000)
-});
+player.on('timeupdate', throttle(function (data) {
+  const { duration, percent, seconds } = data;
+  save("seconds", seconds)
+}, 1000)
+);
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-player.setCurrentTime(load("seconds")).then(function(seconds) {
-    // seconds = the actual time that the player seeked to
-}).catch(function(error) {
-    switch (error.name) {
-        case 'RangeError':
-            // the time was less than 0 or greater than the video’s duration
-            break;
 
-        default:
-            // some other error occurred
-            break;
-    }
-});
+player.setCurrentTime(load("seconds"));

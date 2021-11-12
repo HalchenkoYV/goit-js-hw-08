@@ -13,7 +13,7 @@ function handleInput(event) {
   save("feedback-form-state", array);
 }
 
-/////////////////////////////////////////////////////////////////////////////////
+
 const save = (key, value) => {
   try {
     const serializedState = JSON.stringify(value);
@@ -31,7 +31,7 @@ const load = key => {
     console.error("Get state error: ", error.message);
   }
 };
-///////////////////////////////////////////////////////////////////////////////////
+
 
 document.addEventListener("DOMContentLoaded", ifLoadPage);
 
